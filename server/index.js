@@ -12,7 +12,7 @@ const connection = process.env.CONNECTION_STRING;
 mongoose
   .connect(connection)
   .then(() => console.log("db connected"))
-  .catch((err) => console.log("database error", error));
+  .catch((err) => console.log("database error", err));
 
 //apply middlewares
 app.use(cors());

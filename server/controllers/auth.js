@@ -63,3 +63,12 @@ module.exports.login = async (req, res) => {
     return res.status(400).send("Error! try again");
   }
 };
+
+module.exports.logout = (req, res) => {
+  try {
+    res.clearCookie("token");
+    return res.send({ message: "signout success" });
+  } catch (err) {
+    console.log(err);
+  }
+};

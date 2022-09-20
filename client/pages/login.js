@@ -1,13 +1,29 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import Link from "next/Link";
+import { Context } from "../context";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  //state
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(Context);
+  // const { user } = state;
+
+  //router
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user !== null) router.push("/");
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +34,16 @@ const Login = () => {
         password,
       });
 
-      console.log("Login Response : ", data);
+      // console.log("Login Response : ", data);
+      dispatch({
+        type: "LOGIN",
+        payload: data,
+      });
+
+      // save in localStorage
+      window.localStorage.setItem("user", JSON.stringify(data));
+
+      router.push("/");
 
       toast.success("Login successful, welcome");
       setLoading(false);
